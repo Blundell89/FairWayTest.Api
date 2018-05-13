@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using FairWayTest.Api.Features.V1.Users;
+using FairWayTest.Api.Features.V1.Users.Validators;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +37,9 @@ namespace FairWayTest.Api
 
                 return database;
             });
+
+            services.AddTransient<IValidator<BankDetails>, BankDetailsValidator>();
+            services.AddTransient<IValidator<CreateUser.Command>, CreateUserValidator>();
 
             services.AddMediatR();
             services.AddAutoMapper();

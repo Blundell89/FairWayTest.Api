@@ -25,8 +25,11 @@ namespace FairWayTest.Api.FunctionalTests.Journeys.V1.Users
                 BankDetails = new BankDetails
                 {
                     AccountNumber = "12345678",
-                    Name = "BizfiBank"
-                }
+                    Name = "BizfiBank",
+                    SortCode = "40-10-10"
+                },
+                Surname = "Smith",
+                FirstName = "John"
             };
 
             var client = new HttpClient();
