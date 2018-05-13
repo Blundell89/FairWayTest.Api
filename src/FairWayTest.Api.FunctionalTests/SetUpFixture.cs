@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +17,10 @@ namespace FairWayTest.Api.FunctionalTests
         [OneTimeSetUp]
         public async Task Start()
         {
-            var config = new ConfigurationBuilder().AddInMemoryCollection()
+            var config = new ConfigurationBuilder().AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("FairWayTest.Api:ConnectionString", Configuration.ConnectionString), 
+                })
                 .Build();
 
             _webHost = WebHost.CreateDefaultBuilder()
