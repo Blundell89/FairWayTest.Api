@@ -14,9 +14,10 @@ namespace FairWayTest.Api.FunctionalTests
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("Api-Version", "1.0");
             client.BaseAddress = new Uri(Configuration.BaseUrl, UriKind.Absolute);
 
-            var response = await client.GetAsync("api/values");
+            var response = await client.GetAsync("values");
             var result = await response.Content.ReadAsAsync<string[]>();
 
             result.Length.Should().Be(2);

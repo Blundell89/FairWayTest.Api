@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FairWayTest.Api.Controllers
+namespace FairWayTest.Api.Features.V1
 {
-    [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [Route("[controller]")]
+    [ApiVersion("1.0")]
+    public class ValuesController : ControllerBase
     {
         // GET api/values
         [HttpGet]
