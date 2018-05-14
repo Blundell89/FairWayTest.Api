@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using FairWayTest.Api.Features.V1.Users;
 using FairWayTest.Api.Features.V1.Users.Validators;
@@ -35,6 +36,7 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.Validators
                 .Create();
 
             _validator.Validate(bankDetails).IsValid.Should().BeFalse();
+            _validator.Validate(bankDetails).Errors.Single().ErrorMessage.Should().Be("Account number must be 8 digits and not start with 0.");
         }
 
         [Test]
@@ -42,6 +44,16 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.Validators
         {
             var bankDetails = new Fixture().Build<BankDetails>()
                 .With(x => x.AccountNumber, "123456789")
+                .Create();
+
+            _validator.Validate(bankDetails).IsValid.Should().BeFalse();
+        }
+
+        [Test]
+        public void ReturnInvalidWhenAccountNumberStartsWithZero()
+        {
+            var bankDetails = new Fixture().Build<BankDetails>()
+                .With(x => x.AccountNumber, "01234567")
                 .Create();
 
             _validator.Validate(bankDetails).IsValid.Should().BeFalse();
