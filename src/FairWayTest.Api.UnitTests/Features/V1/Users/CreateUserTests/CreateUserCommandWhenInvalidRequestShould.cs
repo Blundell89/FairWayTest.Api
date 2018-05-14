@@ -28,7 +28,7 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.CreateUserTests
             var validator = Substitute.For<IValidator<CreateUser.Command>>();
             validator.ValidateAsync(_request, CancellationToken.None).Returns(new ValidationResult(new []{new ValidationFailure("Prop1", "Error!"), }));
 
-            var handler = new CreateUser(database, validator);
+            var handler = new CreateUser(database, validator, null, null);
 
             _result = await handler.Handle(_request, CancellationToken.None);
         }

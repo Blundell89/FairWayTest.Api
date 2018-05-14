@@ -10,7 +10,7 @@ namespace FairWayTest.Api.Features.V1.Users
             CreateMap<Requests.CreateUserRequest, CreateUser.Command>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 
-            CreateMap<Requests.BankDetails, BankDetails>();
+            CreateMap<Requests.BankDetails, CreateUser.BankDetails>();
         }
     }
 }

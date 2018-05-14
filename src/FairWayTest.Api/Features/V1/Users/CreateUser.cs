@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using MongoDB.Driver;
@@ -10,7 +11,50 @@ namespace FairWayTest.Api.Features.V1.Users
 {
     public class CreateUser : IRequestHandler<CreateUser.Command, CommandResult>
     {
+        private readonly IMongoCollection<User> _collection;
         private readonly IValidator<Command> _validator;
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+
+        public CreateUser(IMongoDatabase database, IValidator<Command> validator, IMediator mediator, IMapper mapper)
+        {
+            _validator = validator;
+            _mediator = mediator;
+            _mapper = mapper;
+            _collection = database.GetCollection<User>("users");
+        }
+
+        public async Task<CommandResult> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken).ConfigureAwait(false);
+
+            if (!validationResult.IsValid)
+                return CommandResult.Fail(validationResult.Errors.First().ErrorMessage);
+
+            var accountNumberExists = await AccountNumberExists(request, cancellationToken).ConfigureAwait(false);
+
+            if (accountNumberExists)
+                return CommandResult.Fail("Bank account registered to another user.");
+
+            await InsertUser(request, cancellationToken).ConfigureAwait(false);
+
+            return CommandResult.Success;
+        }
+
+        private async Task<bool> AccountNumberExists(Command request, CancellationToken cancellationToken)
+        {
+            var findBankDetailsQuery = new FindBankDetailsByAccountNumber.Query(request.BankDetails.AccountNumber);
+            var bankDetailsMaybe = await _mediator.Send(findBankDetailsQuery, cancellationToken).ConfigureAwait(false);
+
+            return bankDetailsMaybe.HasValue;
+        }
+
+        private async Task InsertUser(Command request, CancellationToken cancellationToken)
+        {
+            var mapped = _mapper.Map<User>(request);
+
+            await _collection.InsertOneAsync(mapped, cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
 
         public class Command : IRequest<CommandResult>
         {
@@ -23,24 +67,13 @@ namespace FairWayTest.Api.Features.V1.Users
             public string Surname { get; set; }
         }
 
-        private readonly IMongoCollection<Command> _collection;
-
-        public CreateUser(IMongoDatabase database, IValidator<Command> validator)
+        public class BankDetails
         {
-            _validator = validator;
-            _collection = database.GetCollection<Command>("users");
-        }
+            public string Name { get; set; }
 
-        public async Task<CommandResult> Handle(Command request, CancellationToken cancellationToken)
-        {
-            var validationResult = await _validator.ValidateAsync(request, cancellationToken).ConfigureAwait(false);
+            public string AccountNumber { get; set; }
 
-            if (!validationResult.IsValid)
-                return CommandResult.Fail(validationResult.Errors.First().ErrorMessage);
-
-            await _collection.InsertOneAsync(request, cancellationToken: cancellationToken).ConfigureAwait(false);
-
-            return CommandResult.Success;
+            public string SortCode { get; set; }
         }
     }
 }
