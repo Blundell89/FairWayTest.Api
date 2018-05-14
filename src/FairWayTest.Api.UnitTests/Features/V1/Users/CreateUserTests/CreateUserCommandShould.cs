@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
 using FairWayTest.Api.Features.V1.Users;
@@ -12,7 +9,7 @@ using MongoDB.Driver;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace FairWayTest.Api.UnitTests.Features.V1.Users
+namespace FairWayTest.Api.UnitTests.Features.V1.Users.CreateUserTests
 {
     public class CreateUserCommandShould
     {
