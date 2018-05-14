@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="autofixture" Version="4.3.0" />
     <PackageReference Include="fluentassertions" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.6" />
     <PackageReference Include="microsoft.net.test.sdk" Version="15.7.0" />

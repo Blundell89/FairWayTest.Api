@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using AutoFixture;
 using FairWayTest.Api.Features.V1.Users.Requests;
 using FluentAssertions;
 using MongoDB.Driver;
@@ -20,24 +21,12 @@ namespace FairWayTest.Api.FunctionalTests.Journeys.V1.Users
         [OneTimeSetUp]
         public async Task GivenAUniqueBankAccount_WhenCreatingANewUser()
         {
-            _createUserRequest = new CreateUserRequest
-            {
-                BankDetails = new BankDetails
-                {
-                    AccountNumber = "12345678",
-                    Name = "BizfiBank",
-                    SortCode = "40-10-10"
-                },
-                Surname = "Smith",
-                FirstName = "John"
-            };
+            var fixture = new Fixture();
+            fixture.Customizations.Add(new AccountNumberBuilder());
 
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("Api-Version", "1.0");
-            client.BaseAddress = new Uri(Configuration.BaseUrl, UriKind.Absolute);
+            _createUserRequest = fixture.Create<CreateUserRequest>();
 
-            _result = await client.PostAsJsonAsync("/users", _createUserRequest);
+            _result = await HttpClients.FairWayApi.PostAsJsonAsync("/users", _createUserRequest);
         }
 
         [Test]

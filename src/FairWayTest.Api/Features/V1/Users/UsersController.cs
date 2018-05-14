@@ -32,5 +32,13 @@ namespace FairWayTest.Api.Features.V1.Users
 
             return BadRequest(new ErrorResponse(result.FailureReason));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(CancellationToken cancellationToken)
+        {
+            var users = await _mediator.Send(new GetUsers.Query(), cancellationToken).ConfigureAwait(false);
+
+            return Ok(users);
+        }
     }
 }

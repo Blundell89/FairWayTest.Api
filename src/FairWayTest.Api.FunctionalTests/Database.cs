@@ -18,6 +18,6 @@ namespace FairWayTest.Api.FunctionalTests
 
         private static IMongoCollection<T> GetCollection<T>(string name) => _database.GetCollection<T>(name);
 
-        public static IMongoCollection<CreateUser.Command> Users => GetCollection<CreateUser.Command>("users");
+        public static IMongoCollection<User> Users => GetCollection<User>("users");
     }
 }
