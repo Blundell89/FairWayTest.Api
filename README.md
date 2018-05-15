@@ -15,4 +15,4 @@
 
 ## Running tests
 
-- `dotnet test src/**/*Tests.csproj`
+- `dotnet test src/
