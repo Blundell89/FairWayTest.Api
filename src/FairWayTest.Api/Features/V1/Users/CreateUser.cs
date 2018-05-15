@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using FairWayTest.Api.Infrastructure;
 using FluentValidation;
 using MediatR;
 using MongoDB.Driver;
@@ -19,7 +20,7 @@ namespace FairWayTest.Api.Features.V1.Users
         {
             _mediator = mediator;
             _mapper = mapper;
-            _collection = database.GetCollection<User>("users");
+            _collection = database.GetCollection<User>(MongoConstants.UsersCollectionName);
         }
 
         public async Task<CommandResult> Handle(Command request, CancellationToken cancellationToken)
@@ -65,8 +66,6 @@ namespace FairWayTest.Api.Features.V1.Users
             public string Name { get; set; }
 
             public string AccountNumber { get; set; }
-
-            public string SortCode { get; set; }
         }
     }
 }

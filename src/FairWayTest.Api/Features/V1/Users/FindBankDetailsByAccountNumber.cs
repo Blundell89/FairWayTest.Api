@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using FairWayTest.Api.Infrastructure;
 using MediatR;
 using MongoDB.Driver;
 
@@ -11,7 +12,7 @@ namespace FairWayTest.Api.Features.V1.Users
 
         public FindBankDetailsByAccountNumber(IMongoDatabase mongoDatabase)
         {
-            _collection = mongoDatabase.GetCollection<User>("users");
+            _collection = mongoDatabase.GetCollection<User>(MongoConstants.UsersCollectionName);
         }
 
         public async Task<Maybe<BankDetails>> Handle(Query request, CancellationToken cancellationToken)

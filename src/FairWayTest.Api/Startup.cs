@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
 using FairWayTest.Api.Configuration;
+using FairWayTest.Api.Features.V1.Accounts;
+using FairWayTest.Api.Infrastructure;
+using FairWayTest.Api.Infrastructure.AccountProviders.Bizfibank;
+using FairWayTest.Api.Infrastructure.AccountProviders.FairWayBank;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -37,6 +41,10 @@ namespace FairWayTest.Api
 
                 return database;
             });
+
+            services.AddTransient<IAccountProvider, BizfiBankAccountProvider>();
+            services.AddTransient<IAccountProvider, FairWayBankAccountProvider>();
+            services.AddSingleton<BizfiBankClient>();
 
             services.AddMediatR();
             services.AddAutoMapper();

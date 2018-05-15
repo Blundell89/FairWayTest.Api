@@ -67,16 +67,5 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.Requests
 
             _validator.Validate(bankDetails).IsValid.Should().BeFalse();
         }
-
-        [Test]
-        public void ReturnInvalidWhenNoSortCode()
-        {
-            var bankDetails = new Fixture().Build<BankDetails>()
-                .With(x => x.AccountNumber, "12345678")
-                .Without(x => x.SortCode)
-                .Create();
-
-            _validator.Validate(bankDetails).IsValid.Should().BeFalse();
-        }
     }
 }
