@@ -22,7 +22,7 @@ namespace FairWayTest.Api.IntegrationTests.Infrastructure.BizfiBank
         {
             var provider = new BizfiBankAccountProvider(new BizfiBankClient(new OptionsWrapper<BizfiBankConfiguration>(new BizfiBankConfiguration
             {
-                BaseUri = "https://bizfibank-bizfitech.azurewebsites.net/api/v1/"
+                BaseUrl = "https://bizfibank-bizfitech.azurewebsites.net/api/v1/"
             })), new MapperConfiguration(x => x.AddProfile<BizfiBankAccountToAccountProfile>()).CreateMapper());
 
             _result = await provider.TryGetAccount("12345678", CancellationToken.None);

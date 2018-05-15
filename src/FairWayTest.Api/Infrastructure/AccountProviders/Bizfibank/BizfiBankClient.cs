@@ -10,7 +10,7 @@ namespace FairWayTest.Api.Infrastructure.AccountProviders.Bizfibank
     {
         public BizfiBankClient(IOptions<BizfiBankConfiguration> options)
         {
-            BaseAddress = new Uri(options.Value.BaseUri, UriKind.Absolute);
+            BaseAddress = new Uri(options.Value.BaseUrl, UriKind.Absolute);
 
             DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }

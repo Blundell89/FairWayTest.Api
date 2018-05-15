@@ -20,6 +20,7 @@ namespace FairWayTest.Api.FunctionalTests
             var config = new ConfigurationBuilder().AddInMemoryCollection(new[]
                 {
                     new KeyValuePair<string, string>("FairWayTest.Api:ConnectionString", Configuration.ConnectionString), 
+                    new KeyValuePair<string, string>("BizfiBank:BaseUrl", Configuration.BizfiBankUrl), 
                 })
                 .Build();
 

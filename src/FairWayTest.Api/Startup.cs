@@ -42,10 +42,11 @@ namespace FairWayTest.Api
                 return database;
             });
 
-            services.AddTransient<IAccountProvider, BizfiBankAccountProvider>();
+            services.AddTransient<IAccountProvider>(x => new BizfiBankAccountProvider(x.GetService<BizfiBankClient>(), x.GetService<IMapper>()));
             services.AddTransient<IAccountProvider, FairWayBankAccountProvider>();
             services.AddSingleton<BizfiBankClient>();
 
+            services.AddOptions();
             services.AddMediatR();
             services.AddAutoMapper();
             services.AddMvc()
@@ -54,6 +55,8 @@ namespace FairWayTest.Api
             {
                 x.ApiVersionReader = new HeaderApiVersionReader("Api-Version");
             });
+
+            services.Configure<BizfiBankConfiguration>(Configuration.GetSection("BizfiBank"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
