@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -23,6 +24,9 @@ namespace FairWayTest.Api.Features.V1.Users
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Requests.CreateUserRequest createUserRequest, CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new ErrorResponse(ModelState.Values.First().Errors.First().ErrorMessage));
+
             var command = _mapper.Map<CreateUser.Command>(createUserRequest);
 
             var result = await _mediator.Send(command, cancellationToken).ConfigureAwait(false);

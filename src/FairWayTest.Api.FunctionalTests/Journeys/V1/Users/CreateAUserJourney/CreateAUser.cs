@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using FairWayTest.Api.Features.V1.Users.Requests;
@@ -11,7 +8,7 @@ using FluentAssertions;
 using MongoDB.Driver;
 using NUnit.Framework;
 
-namespace FairWayTest.Api.FunctionalTests.Journeys.V1.Users
+namespace FairWayTest.Api.FunctionalTests.Journeys.V1.Users.CreateAUserJourney
 {
     public class CreateAUser
     {

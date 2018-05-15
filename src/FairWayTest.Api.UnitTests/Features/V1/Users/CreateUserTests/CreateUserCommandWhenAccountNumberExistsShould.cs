@@ -27,13 +27,10 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.CreateUserTests
             _collection = Substitute.For<IMongoCollection<CreateUser.Command>>();
             database.GetCollection<CreateUser.Command>("users").Returns(_collection);
 
-            var validator = Substitute.For<IValidator<CreateUser.Command>>();
-            validator.ValidateAsync(_request, CancellationToken.None).Returns(new ValidationResult());
-
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Is<FindBankDetailsByAccountNumber.Query>(x => x.AccountNumber == _request.BankDetails.AccountNumber), CancellationToken.None).Returns(Maybe<BankDetails>.Some(new BankDetails()));
 
-            var handler = new CreateUser(database, validator, mediator, null);
+            var handler = new CreateUser(database, mediator, null);
 
             _result = await handler.Handle(_request, CancellationToken.None);
         }

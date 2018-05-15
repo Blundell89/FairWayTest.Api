@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using FairWayTest.Api.Features.V1.Users;
-using FairWayTest.Api.Features.V1.Users.Validators;
+using FairWayTest.Api.Configuration;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,12 +38,10 @@ namespace FairWayTest.Api
                 return database;
             });
 
-            services.AddTransient<IValidator<BankDetails>, BankDetailsValidator>();
-            services.AddTransient<IValidator<CreateUser.Command>, CreateUserValidator>();
-
             services.AddMediatR();
             services.AddAutoMapper();
-            services.AddMvc();
+            services.AddMvc()
+                    .AddFluentValidation(x => x.RegisterValidatorsFromAssembly(GetType().Assembly));
             services.AddApiVersioning(x =>
             {
                 x.ApiVersionReader = new HeaderApiVersionReader("Api-Version");
@@ -58,10 +56,5 @@ namespace FairWayTest.Api
 
             app.UseMvc();
         }
-    }
-
-    public class MongoConfiguration
-    {
-        public string ConnectionString { get; set; }
     }
 }

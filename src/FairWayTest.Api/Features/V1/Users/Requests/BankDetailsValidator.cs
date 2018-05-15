@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FairWayTest.Api.Features.V1.Users.Validators
+namespace FairWayTest.Api.Features.V1.Users.Requests
 {
     public class BankDetailsValidator : AbstractValidator<BankDetails>
     {

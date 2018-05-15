@@ -12,13 +12,11 @@ namespace FairWayTest.Api.Features.V1.Users
     public class CreateUser : IRequestHandler<CreateUser.Command, CommandResult>
     {
         private readonly IMongoCollection<User> _collection;
-        private readonly IValidator<Command> _validator;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public CreateUser(IMongoDatabase database, IValidator<Command> validator, IMediator mediator, IMapper mapper)
+        public CreateUser(IMongoDatabase database, IMediator mediator, IMapper mapper)
         {
-            _validator = validator;
             _mediator = mediator;
             _mapper = mapper;
             _collection = database.GetCollection<User>("users");
@@ -26,11 +24,6 @@ namespace FairWayTest.Api.Features.V1.Users
 
         public async Task<CommandResult> Handle(Command request, CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.ValidateAsync(request, cancellationToken).ConfigureAwait(false);
-
-            if (!validationResult.IsValid)
-                return CommandResult.Fail(validationResult.Errors.First().ErrorMessage);
-
             var accountNumberExists = await AccountNumberExists(request, cancellationToken).ConfigureAwait(false);
 
             if (accountNumberExists)
