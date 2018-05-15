@@ -32,6 +32,14 @@ namespace FairWayTest.Api.FunctionalTests.Journeys.V1.Users.CreateAUserJourney
         public void ThenTheRequestWasBad() => _result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
         [Test]
+        public async Task ThenAnErrorResponseIsReturned()
+        {
+            var errorResponse = await _result.Content.ReadAsAsync<ErrorResponse>();
+
+            errorResponse.Message.Should().BeEquivalentTo("'First Name' should not be empty.");
+        }
+
+        [Test]
         public async Task ThenTheUserWasNotStored()
         {
             var user = await Database.Users.Find(x => x.Surname == _createUserRequest.Surname).SingleOrDefaultAsync();
