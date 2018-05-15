@@ -1,31 +1,31 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AutoFixture;
-using FairWayTest.Api.Features.V1.Users;
-using FairWayTest.Api.Features.V1.Users.Validators;
+using FairWayTest.Api.Features.V1.Users.Requests;
 using FluentAssertions;
 using FluentValidation;
+using FluentValidation.Results;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace FairWayTest.Api.UnitTests.Features.V1.Users.Validators
+namespace FairWayTest.Api.UnitTests.Features.V1.Users.Requests
 {
-    public class CreateUserValidatorShould
+    public class CreateUserRequestValidatorShould
     {
-        private CreateUserValidator _validator;
+        private CreateUserRequestValidator _validator;
 
         [SetUp]
         public void WhenValidatingBankDetails()
         {
-            var createUser = Substitute.For<IValidator<BankDetails>>();
+            var bankDetailsValidator = Substitute.For<IValidator<BankDetails>>();
+            bankDetailsValidator.Validate(Arg.Any<ValidationContext>()).Returns(new ValidationResult());
 
-            _validator = new CreateUserValidator(createUser);
+            _validator = new CreateUserRequestValidator(bankDetailsValidator);
         }
 
         [Test]
         public void ReturnValidWhenAllPropsCorrect()
         {
-            var createUser = new Fixture().Build<CreateUser.Command>()
+            var createUser = new Fixture().Build<CreateUserRequest>()
                 .Create();
 
             _validator.Validate(createUser).IsValid.Should().BeTrue();
@@ -34,7 +34,7 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.Validators
         [Test]
         public void ReturnInvalidWhenFirstNameEmpty()
         {
-            var createUser = new Fixture().Build<CreateUser.Command>()
+            var createUser = new Fixture().Build<CreateUserRequest>()
                 .Without(x => x.FirstName)
                 .Create();
 
@@ -44,7 +44,7 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.Validators
         [Test]
         public void ReturnInvalidWhenSurnameEmpty()
         {
-            var createUser = new Fixture().Build<CreateUser.Command>()
+            var createUser = new Fixture().Build<CreateUserRequest>()
                 .Without(x => x.Surname)
                 .Create();
 
@@ -54,18 +54,8 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.Validators
         [Test]
         public void ReturnInvalidWhenBankDetailsEmpty()
         {
-            var createUser = new Fixture().Build<CreateUser.Command>()
+            var createUser = new Fixture().Build<CreateUserRequest>()
                 .Without(x => x.BankDetails)
-                .Create();
-
-            _validator.Validate(createUser).IsValid.Should().BeFalse();
-        }
-
-        [Test]
-        public void ReturnInvalidWhenIdEmpty()
-        {
-            var createUser = new Fixture().Build<CreateUser.Command>()
-                .Without(x => x.Id)
                 .Create();
 
             _validator.Validate(createUser).IsValid.Should().BeFalse();
@@ -74,11 +64,11 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.Validators
         [Test]
         public void ReturnTheErrorAndPropertyNameInTheErrorMessage()
         {
-            var createUser = new Fixture().Build<CreateUser.Command>()
-                .Without(x => x.Id)
+            var createUser = new Fixture().Build<CreateUserRequest>()
+                .Without(x => x.BankDetails)
                 .Create();
 
-            _validator.Validate(createUser).Errors.Single().ErrorMessage.Should().Be("'Id' should not be empty.");
+            _validator.Validate(createUser).Errors.Single().ErrorMessage.Should().Be("'Bank Details' must not be empty.");
         }
     }
 }

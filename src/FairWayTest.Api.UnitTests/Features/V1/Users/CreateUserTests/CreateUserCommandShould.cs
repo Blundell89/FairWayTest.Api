@@ -28,9 +28,6 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.CreateUserTests
             _collection = Substitute.For<IMongoCollection<User>>();
             database.GetCollection<User>("users").Returns(_collection);
 
-            var validator = Substitute.For<IValidator<CreateUser.Command>>();
-            validator.ValidateAsync(request, CancellationToken.None).Returns(new ValidationResult());
-
             var mediator = Substitute.For<IMediator>();
             mediator.Send(Arg.Is<FindBankDetailsByAccountNumber.Query>(x => x.AccountNumber == request.BankDetails.AccountNumber), CancellationToken.None).Returns(Maybe<BankDetails>.None());
             
@@ -38,7 +35,7 @@ namespace FairWayTest.Api.UnitTests.Features.V1.Users.CreateUserTests
             var mapper = Substitute.For<IMapper>();
             mapper.Map<User>(request).Returns(_user);
 
-            var handler = new CreateUser(database, validator, mediator, mapper);
+            var handler = new CreateUser(database, mediator, mapper);
             
             _result = await handler.Handle(request, CancellationToken.None);
         }

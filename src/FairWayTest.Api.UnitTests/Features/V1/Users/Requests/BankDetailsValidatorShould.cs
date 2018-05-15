@@ -1,12 +1,10 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using AutoFixture;
-using FairWayTest.Api.Features.V1.Users;
-using FairWayTest.Api.Features.V1.Users.Validators;
+using FairWayTest.Api.Features.V1.Users.Requests;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace FairWayTest.Api.UnitTests.Features.V1.Users.Validators
+namespace FairWayTest.Api.UnitTests.Features.V1.Users.Requests
 {
     public class BankDetailsValidatorShould
     {
