@@ -21,6 +21,7 @@ namespace FairWayTest.Api.FunctionalTests
                 {
                     new KeyValuePair<string, string>("FairWayTest.Api:ConnectionString", Configuration.ConnectionString), 
                     new KeyValuePair<string, string>("BizfiBank:BaseUrl", Configuration.BizfiBankUrl), 
+                    new KeyValuePair<string, string>("FairWayBank:BaseUrl", Configuration.FairWayBankUrl), 
                 })
                 .Build();
 

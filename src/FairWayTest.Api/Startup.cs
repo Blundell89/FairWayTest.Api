@@ -57,6 +57,7 @@ namespace FairWayTest.Api
             });
 
             services.Configure<BizfiBankConfiguration>(Configuration.GetSection("BizfiBank"));
+            services.Configure<FairWayBankConfiguration>(Configuration.GetSection("FairWayBank"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
