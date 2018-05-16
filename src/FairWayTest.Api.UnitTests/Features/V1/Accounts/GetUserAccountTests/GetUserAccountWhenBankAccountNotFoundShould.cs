@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FairWayTest.Api.Features.V1.Accounts;
 using FairWayTest.Api.Features.V1.Users;
 using FairWayTest.Api.Infrastructure;
+using FairWayTest.Api.Infrastructure.AccountProviders;
 using FluentAssertions;
 using MongoDB.Driver;
 using NSubstitute;

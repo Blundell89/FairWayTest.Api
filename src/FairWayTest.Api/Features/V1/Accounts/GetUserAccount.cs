@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FairWayTest.Api.Configuration;
 using FairWayTest.Api.Features.V1.Users;
 using FairWayTest.Api.Infrastructure;
+using FairWayTest.Api.Infrastructure.AccountProviders;
 using MediatR;
 using MongoDB.Driver;
 

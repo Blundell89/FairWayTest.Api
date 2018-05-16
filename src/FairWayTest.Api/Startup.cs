@@ -2,6 +2,7 @@
 using FairWayTest.Api.Configuration;
 using FairWayTest.Api.Features.V1.Accounts;
 using FairWayTest.Api.Infrastructure;
+using FairWayTest.Api.Infrastructure.AccountProviders;
 using FairWayTest.Api.Infrastructure.AccountProviders.Bizfibank;
 using FairWayTest.Api.Infrastructure.AccountProviders.FairWayBank;
 using FluentValidation;
