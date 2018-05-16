@@ -43,8 +43,9 @@ namespace FairWayTest.Api
             });
 
             services.AddTransient<IAccountProvider>(x => new BizfiBankAccountProvider(x.GetService<BizfiBankClient>(), x.GetService<IMapper>()));
-            services.AddTransient<IAccountProvider, FairWayBankAccountProvider>();
+            services.AddTransient<IAccountProvider>(x => new FairWayBankAccountProvider(x.GetService<FairWayBankClient>(), x.GetService<IMapper>()));
             services.AddSingleton<BizfiBankClient>();
+            services.AddSingleton<FairWayBankClient>();
 
             services.AddOptions();
             services.AddMediatR();
